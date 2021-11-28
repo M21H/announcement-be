@@ -1,49 +1,76 @@
+import ApiError from '../helpers/apiError.js'
 import PostService from '../services/PostService.js'
 
 class PostController {
-  async create(req, res) {
+  async create(req, res, next) {
     try {
-      const post = await PostService.create(req.body)
-      return res.json(post)
+      const { author, title, desc } = req.body
+      if (!author || !title || !desc) {
+        throw ApiError.badRequest('Missing required author or title or desc fields')
+      }
+      const post = await PostService.create({ author, title, desc })
+      if (!post) {
+        throw ApiError.badGateway('announcement not created')
+      }
+      res.json(post)
     } catch (e) {
-      res.status(500).json(e.message)
+      next(e)
     }
   }
 
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
-      const post = await PostService.getOne(req.params.id, req.query)
-      return res.json(post)
+      const post = await PostService.getOne(req.params.id)
+      if (!post) {
+        throw ApiError.badGateway()
+      }
+      res.json(post)
     } catch (e) {
-      res.status(500).json(e.message)
+      next(e)
     }
   }
 
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       const posts = await PostService.getAll(req.query)
-      return res.json(posts)
+      if (!posts) {
+        throw ApiError.badGateway()
+      }
+      res.json(posts)
     } catch (e) {
-      res.status(500).json(e.message)
+      next(e)
     }
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     try {
-      const post = await PostService.update(req.params.id, req.body)
-      return res.json(post)
+      const { id } = req.params
+      if (!id) {
+        throw ApiError.badRequest('id not specified')
+      }
+      const post = await PostService.update(id, req.body)
+      if (!post) {
+        throw ApiError.badGateway('can not update')
+      }
+      res.json(post)
     } catch (e) {
-      console.log(e)
-      res.status(500).json(e.message)
+      return next(e)
     }
   }
 
-  async delete(req, res) {
+  async delete(req, res, next) {
     try {
+      const { id } = req.params
+      if (!id) {
+        throw ApiError.badRequest('id not specified')
+      }
       const post = await PostService.delete(req.params.id)
-      return res.json(post)
+      if (!post) {
+        throw ApiError.badGateway('can not deleted')
+      }
+      res.json(post)
     } catch (e) {
-      res.status(500).json(e.message)
+      next(e)
     }
   }
 }
