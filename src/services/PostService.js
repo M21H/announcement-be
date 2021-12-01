@@ -1,4 +1,3 @@
-import { parse } from 'dotenv'
 import PostSchema from '../models/PostSchema.js'
 
 class PostService {
