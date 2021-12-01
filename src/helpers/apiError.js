@@ -6,8 +6,8 @@ class ApiError {
   static badRequest(message) {
     return new ApiError(404, message)
   }
-  static badGateway(message = 'can not found') {
-    return new ApiError(502, message)
+  static notFound(message = 'not found') {
+    return new ApiError(400, message)
   }
 }
 

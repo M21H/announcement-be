@@ -4,6 +4,7 @@ import PostService from '../services/PostService.js'
 class PostController {
   async create(req, res, next) {
     try {
+      console.log(req.body)
       const { author, title, desc } = req.body
       if (!author || !title || !desc) {
         throw ApiError.badRequest('Missing required author or title or desc fields')
@@ -19,11 +20,13 @@ class PostController {
   }
 
   async getOne(req, res, next) {
+    console.log('params', req.params)
     try {
-      const post = await PostService.getOne(req.params.id)
-      if (!post) {
-        throw ApiError.badGateway()
+      const { id } = req.params
+      if (!id) {
+        throw ApiError.badRequest('id not specified')
       }
+      const post = await PostService.getOne(id)
       res.json(post)
     } catch (e) {
       next(e)
@@ -33,9 +36,6 @@ class PostController {
   async getAll(req, res, next) {
     try {
       const posts = await PostService.getAll(req.query)
-      if (!posts) {
-        throw ApiError.badGateway()
-      }
       res.json(posts)
     } catch (e) {
       next(e)
