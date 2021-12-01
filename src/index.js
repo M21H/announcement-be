@@ -4,17 +4,21 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import 'dotenv/config'
 
-import router from './router'
 import errorHandler from './middlewares/errorMiddleware.js'
-import ApiError from './helpers/apiError'
+
+import postRouter from './routes/posts'
+import auth from './routes/auth'
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(bodyParser.json({ limit: '30mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
-app.use('/api', router)
+
+app.use('/api/post', postRouter)
+app.use('/api/auth', auth)
 
 app.use(errorHandler)
 
