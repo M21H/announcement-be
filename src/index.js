@@ -7,7 +7,7 @@ import 'dotenv/config'
 import errorHandler from './middlewares/errorMiddleware.js'
 
 import postRouter from './routes/posts'
-import auth from './routes/auth'
+import authRouter from './routes/auth'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
 
 app.use('/api/post', postRouter)
-app.use('/api/auth', auth)
+app.use('/api/auth', authRouter)
 
 app.use(errorHandler)
 
