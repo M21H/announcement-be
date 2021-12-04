@@ -3,7 +3,8 @@ import Auth from '../controllers/AuthController'
 
 const authRouter = new Router()
 
-authRouter.get('/register', Auth.register)
-authRouter.get('/login', Auth.login)
+authRouter.post('/register', Auth.register)
+authRouter.put('/login', Auth.login)
+authRouter.get('/logout', Auth.logout)
 
 export default authRouter
