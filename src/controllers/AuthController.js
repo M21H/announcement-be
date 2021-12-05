@@ -1,11 +1,15 @@
-import jwt from 'jsonwebtoken'
 import ApiError from '../helpers/apiError'
 import AuthService from '../services/AuthService'
 import 'dotenv/config'
 
-const generateAccessToken = (id, username) => {
-	const payload = { id, username }
-	return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' })
+// const generateAccessToken = (id, username) => {
+// 	const payload = { id, username }
+// 	return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' })
+// }
+
+const sendToken = (user, statusCode, res) => {
+	const token = user.getSignedToken()
+	res.status(statusCode).json({ success: true, user, token })
 }
 
 class AuthController {
@@ -23,7 +27,7 @@ class AuthController {
 				return res.status(400).json({ message: { error: `user ${username} already exist` } })
 			}
 			const newUser = await AuthService.createUser({ username, password })
-			res.status(201).json(newUser) // need return token
+			sendToken(newUser, 201, res)
 		} catch (e) {
 			next(e)
 		}
@@ -45,14 +49,13 @@ class AuthController {
 				return res.status(400).json({ message: { error: `user ${username} not founded` } })
 			}
 			const isMatch = await user.matchPasswords(password)
-			console.log(isMatch)
 
 			if (!isMatch) {
 				return res.status(400).json({ message: { error: `password not valid` } })
 			}
-			const token = generateAccessToken(user._id, user.username)
+			// const token = generateAccessToken(user._id, user.username)
 			// need just return token
-			res.json({ user: { id: user._id, username: user.username, createdAt: user.createdAt }, token })
+			sendToken(user, 200, res)
 		} catch (e) {
 			next(e)
 		}
