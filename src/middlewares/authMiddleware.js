@@ -17,13 +17,13 @@ const authMiddleware = async (req, res, next) => {
 		const user = await UserSchema.findById(id)
 
 		if (!user) {
-			return next(new ApiError(404, 'No user found with this id'))
+			return ApiError.Unauthorized()
 		}
 
 		req.user = user
 		next()
 	} catch (e) {
-		next(new ApiError(404, 'Unauthorized'))
+		next(ApiError.Unauthorized())
 	}
 }
 

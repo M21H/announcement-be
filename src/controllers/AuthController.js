@@ -2,14 +2,9 @@ import ApiError from '../helpers/apiError'
 import AuthService from '../services/AuthService'
 import 'dotenv/config'
 
-// const generateAccessToken = (id, username) => {
-// 	const payload = { id, username }
-// 	return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' })
-// }
-
 const sendToken = (user, statusCode, res) => {
 	const token = user.getSignedToken()
-	res.status(statusCode).json({ success: true, user, token })
+	res.status(statusCode).json({ success: true, token })
 }
 
 class AuthController {
@@ -61,12 +56,8 @@ class AuthController {
 		}
 	}
 
-	async logout(req, res, next) {
-		try {
-			res.json({ user: { isAuth: false } })
-		} catch (e) {
-			next(e)
-		}
+	refresh(req, res, next) {
+		
 	}
 
 	async delete(req, res, next) {
