@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
 		if (!token) {
 			throw ApiError.Unauthorized()
 		}
-		const { id } = jwt.verify(token, process.env.JWT_SECRET)
+		const { id } = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
 
 		const user = await UserSchema.findById(id)
 

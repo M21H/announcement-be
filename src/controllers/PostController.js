@@ -58,7 +58,7 @@ class PostController {
 				throw ApiError.badRequest('id not specified')
 			}
 			const post = await PostService.delete(req.params.id)
-			res.json(post)
+			res.json(post._id)
 		} catch (e) {
 			next(e)
 		}

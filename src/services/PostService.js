@@ -10,9 +10,9 @@ class PostService {
 		const post = await PostSchema.findOne({ _id: id })
 		return post
 	}
-	
+
 	async getAll(query) {
-		const { page = 1, size = 5, title } = query
+		const { page = 1, size = 10, title } = query
 
 		const limit = size
 		const skip = (page - 1) * size
@@ -36,7 +36,7 @@ class PostService {
 	}
 
 	async delete(id) {
-		const deletedPost = await PostSchema.deleteOne({ _id: id })
+		const deletedPost = await PostSchema.findByIdAndDelete(id)
 		return deletedPost
 	}
 }
