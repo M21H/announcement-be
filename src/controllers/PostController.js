@@ -23,7 +23,7 @@ class PostController {
 				throw ApiError.badRequest('id not specified')
 			}
 			const post = await PostService.getOne(id)
-			res.json(post)
+			res.json([post])
 		} catch (e) {
 			next(e)
 		}
