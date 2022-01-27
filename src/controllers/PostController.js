@@ -15,6 +15,13 @@ class PostController {
 		}
 	}
 
+	async getSimilar(req, res, next) {
+		try {
+		} catch (e) {
+			next(e)
+		}
+	}
+
 	async getOne(req, res, next) {
 		console.log('params', req.params)
 		try {
@@ -45,7 +52,7 @@ class PostController {
 				throw ApiError.badRequest('id not specified')
 			}
 			const post = await PostService.update(id, req.body)
-			res.json(post)
+			res.status(200).json(post)
 		} catch (e) {
 			return next(e)
 		}

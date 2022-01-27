@@ -12,22 +12,23 @@ class PostService {
 	}
 
 	async getAll(query) {
-		const { page = 1, size = 10, title } = query
+		const { page = 1, size = 5, title } = query
 
-		const limit = size
+		const limit = size * 1
 		const skip = (page - 1) * size
 
 		let posts
+		const { length: totalLength } = await PostSchema.find()
+
 		if (title) {
 			posts = await PostSchema.find({ title }).limit(size).skip(skip)
 			const similar = await PostSchema.find({
 				$and: [{ title: { $regex: title } }, { desc: { $regex: title } }],
 			}).limit(3)
-			console.log(similar)
-			return { size, title, data: { posts, similar } }
+			return { total: totalLength, title, data: { posts, similar } }
 		}
 		posts = await PostSchema.find().limit(limit).skip(skip)
-		return { size, data: posts }
+		return { total: totalLength, data: posts }
 	}
 
 	async update(id, body) {
