@@ -43,12 +43,12 @@ class AuthController {
 			const user = await AuthService.getUser(username)
 
 			if (!user) {
-				return res.status(400).json({ status: 0, data: { message: { error: `user ${username} not founded` } } })
+				return res.status(200).json({ status: 0, data: { message: { error: `user ${username} not founded` } } })
 			}
 			const isMatch = await user.matchPasswords(password)
 
 			if (!isMatch) {
-				return res.status(400).json({ status: 0, data: { message: { error: `password not valid` } } })
+				return res.status(200).json({ status: 0, data: { message: { error: `password not valid` } } })
 			}
 			sendToken(user, 200, res)
 		} catch (e) {
@@ -56,7 +56,6 @@ class AuthController {
 		}
 	}
 
-	refresh(req, res, next) {}
 
 	async delete(req, res, next) {
 		const { id } = req.params

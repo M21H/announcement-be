@@ -14,14 +14,7 @@ class PostController {
 			next(e)
 		}
 	}
-
-	async getSimilar(req, res, next) {
-		try {
-		} catch (e) {
-			next(e)
-		}
-	}
-
+	
 	async getOne(req, res, next) {
 		console.log('params', req.params)
 		try {

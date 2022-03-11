@@ -27,7 +27,7 @@ class PostService {
 			}).limit(3)
 			return { total: totalLength, title, data: { posts, similar } }
 		}
-		posts = await PostSchema.find().limit(limit).skip(skip)
+		posts = await PostSchema.find().sort({ createdAt: -1 }).limit(limit).skip(skip)
 		return { total: totalLength, data: posts }
 	}
 
